@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "yoga-layout": "^1.9.3"
+  }
+}

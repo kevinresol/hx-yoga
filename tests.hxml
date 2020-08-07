@@ -1,0 +1,11 @@
+-cp tests
+-main RunTests
+-dce full
+
+-lib tink_unittest
+-lib ammer
+
+-D ammer.lib.yoga.abi=cpp
+-D ammer.lib.yoga.library=lib
+-D ammer.lib.yoga.include=submodules/yoga/yoga
+-D ammer.lib.yoga.headers=Yoga.h
