@@ -23,7 +23,6 @@ extern class Node {
 	function getLayoutMargin(edge:Edge):Single;
 	function getLayoutPadding(edge:Edge):Single;
 	function getLayoutBorder(edge:Edge):Single;
-
 	function getDisplay():Display;
 	function getFlexBasis():NativeValue;
 	function getFlexDirection():FlexDirection;
@@ -43,13 +42,12 @@ extern class Node {
 	function getPosition(edge:Edge):NativeValue;
 	function getPositionType():PositionType;
 	function getWidth():NativeValue;
-
 	function addChildAt(child:Node, index:Int):Void;
 	function isDirty():Bool;
-	// function markDirty():Void;
+	function markDirty():Void;
 	function indexOf(child:Node):Int;
 	function removeChildAt(index:Int):Node;
-	// function reset():Void;
+	function reset():Void;
 	function setAlignContent(alignContent:Align):Void;
 	function setAlignItems(alignItems:Align):Void;
 	function setAlignSelf(alignSelf:Align):Void;
