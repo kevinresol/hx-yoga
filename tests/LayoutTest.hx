@@ -102,6 +102,8 @@ class LayoutTest {
 
 		asserts.assert(root.getChildCount() == 0);
 
+		root.freeRecursive();
+
 		return asserts.done();
 	}
 
@@ -126,6 +128,10 @@ class LayoutTest {
 		asserts.assert(measureFunctionCalled);
 		asserts.assert(child.getComputedWidth() == 101);
 		asserts.assert(child.getComputedHeight() == 42);
+
+		child.free();
+		root.free();
+
 		return asserts.done();
 	}
 }

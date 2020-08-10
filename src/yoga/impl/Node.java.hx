@@ -8,9 +8,7 @@ extern class Node {
 		return YogaNodeFactory.create();
 
 	function calculateLayout(width:Single, height:Single):Void;
-	// function copyStyle(node:Node):Void;
-	// function free():Void;
-	// function freeRecursive():Void;
+	function copyStyle(src:Node):Void;
 	function getAlignContent():Align;
 	function getAlignItems():Align;
 	function getAlignSelf():Align;
@@ -18,9 +16,6 @@ extern class Node {
 	function getBorder(edge:Edge):Single;
 	function getChild(index:Int):Node;
 	function getChildCount():Int;
-	// function getComputedBorder(edge:Edge):Single;
-	// function getComputedBottom():Single;
-	// function getComputedLayout():Layout;
 	function getLayoutWidth():Single;
 	function getLayoutHeight():Single;
 	function getLayoutX():Single;

@@ -69,6 +69,14 @@ abstract Node(NodeImpl) from NodeImpl to NodeImpl {
 
 	public inline function setAspectRatio(v:Float):Void
 		this.setAspectRatio(v);
+
+	public inline function free():Void {
+		/* no-op because java uses finializers */
+	}
+
+	public inline function freeRecursive():Void {
+		/* no-op because java uses finializers */
+	}
 	#end
 
 	#if js

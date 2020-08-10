@@ -6,7 +6,7 @@ import haxe.extern.EitherType;
 extern class Node {
 	static function create():Node;
 	function calculateLayout(?width:Float, ?height:Float, ?direction:Direction):Void;
-	function copyStyle(node:Node):Void;
+	function copyStyle(src:Node):Void;
 	function free():Void;
 	function freeRecursive():Void;
 	function getAlignContent():Align;
