@@ -63,8 +63,14 @@ abstract Node(NodeImpl) from NodeImpl to NodeImpl {
 
 	public inline function setFlexWrap(wrap:Wrap):Void
 		this.setWrap(wrap);
+
+	public inline function getAspectRatio():Float
+		return this.getAspectRatio();
+
+	public inline function setAspectRatio(v:Float):Void
+		this.setAspectRatio(v);
 	#end
-	
+
 	#if js
 	public inline function setMeasureFunction(f:MeasureFunction):Void
 		this.setMeasureFunc(f);

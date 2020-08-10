@@ -175,4 +175,13 @@ class GetSetTest {
 		}
 		return asserts.done();
 	}
+
+	public function aspectRatio() {
+		final root = new Node();
+
+		root.setAspectRatio(1.125); // =1+1/8, doesn't lose precision during the double to float conversion on java
+		asserts.assert(root.getAspectRatio() == 1.125);
+
+		return asserts.done();
+	}
 }

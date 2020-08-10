@@ -14,7 +14,7 @@ extern class Node {
 	function getAlignContent():Align;
 	function getAlignItems():Align;
 	function getAlignSelf():Align;
-	// function getAspectRatio():Single;
+	function getAspectRatio():Single;
 	function getBorder(edge:Edge):Single;
 	function getChild(index:Int):Node;
 	function getChildCount():Int;
@@ -58,7 +58,7 @@ extern class Node {
 	function setAlignContent(alignContent:Align):Void;
 	function setAlignItems(alignItems:Align):Void;
 	function setAlignSelf(alignSelf:Align):Void;
-	// function setAspectRatio(aspectRatio:Single):Void;
+	function setAspectRatio(aspectRatio:Single):Void;
 	function setBorder(edge:Edge, borderWidth:Single):Void;
 	function setDisplay(display:Display):Void;
 	function setFlex(flex:Single):Void;
@@ -95,8 +95,6 @@ extern class Node {
 	function setWidth(width:Single):Void;
 	function setWidthAuto():Void;
 	function setWidthPercent(width:Single):Void;
-	// function unsetMeasureFunc():Void;
-	// }
 }
 
 @:native('com.facebook.yoga.YogaNodeFactory')
