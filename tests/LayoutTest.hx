@@ -1,6 +1,7 @@
 package;
 
 import yoga.FlexDirection;
+import yoga.MeasureMode;
 import yoga.Node;
 import yoga.Edge;
 
@@ -8,7 +9,6 @@ import yoga.Edge;
 class LayoutTest {
 	public function new() {}
 
-	@:include
 	public function test() {
 		var root = new Node();
 		// root.setWidth(Point(100));
@@ -102,6 +102,30 @@ class LayoutTest {
 
 		asserts.assert(root.getChildCount() == 0);
 
+		return asserts.done();
+	}
+
+	public function measureFunction() {
+		final root = new Node();
+		final child = new Node();
+		var measureFunctionCalled = false;
+
+		child.setPositionType(Absolute);
+		child.setMeasureFunction((w:Float, wm:MeasureMode, h:Float, hm:MeasureMode) -> {
+			measureFunctionCalled = true;
+			asserts.assert(w == 500);
+			asserts.assert(wm == AtMost);
+			asserts.assert(Math.isNaN(h));
+			asserts.assert(hm == Undefined);
+			new yoga.MeasureOutput(101, 42);
+		});
+
+		root.insertChild(child, 0);
+		root.calculateLayout(500, 500, Ltr);
+
+		asserts.assert(measureFunctionCalled);
+		asserts.assert(child.getComputedWidth() == 101);
+		asserts.assert(child.getComputedHeight() == 42);
 		return asserts.done();
 	}
 }

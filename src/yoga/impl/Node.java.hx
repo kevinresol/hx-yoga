@@ -81,7 +81,7 @@ extern class Node {
 	function setMaxHeightPercent(maxHeight:Single):Void;
 	function setMaxWidth(maxWidth:Single):Void;
 	function setMaxWidthPercent(maxWidth:Single):Void;
-	// function setMeasureFunc(measureFunc:MeasureFunction):Void;
+	function setMeasureFunction(measureFunc:MeasureFunction):Void;
 	function setMinHeight(minHeight:Single):Void;
 	function setMinHeightPercent(minHeight:Single):Void;
 	function setMinWidth(minWidth:Single):Void;

@@ -1,3 +1,7 @@
 package yoga;
 
-typedef MeasureMode = Dynamic;
+enum MeasureMode {
+	Undefined;
+	Exactly;
+	AtMost;
+}

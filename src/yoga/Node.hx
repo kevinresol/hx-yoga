@@ -64,6 +64,11 @@ abstract Node(NodeImpl) from NodeImpl to NodeImpl {
 	public inline function setFlexWrap(wrap:Wrap):Void
 		this.setWrap(wrap);
 	#end
+	
+	#if js
+	public inline function setMeasureFunction(f:MeasureFunction):Void
+		this.setMeasureFunc(f);
+	#end
 	// inline function copyStyle(node:Node):Void
 	// 	this.copyStyle(node);
 	// inline function free():Void
