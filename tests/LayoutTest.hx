@@ -1,60 +1,106 @@
 package;
 
+import yoga.FlexDirection;
 import yoga.Node;
+import yoga.Edge;
 
 @:asserts
 class LayoutTest {
 	public function new() {}
 
+	@:include
 	public function test() {
-		var root = Node.create();
-		root.setWidth(100);
-		// root.setFlexWrap(Wrap);
-		trace(root);
-		trace(root.getWidth());
+		var root = new Node();
+		// root.setWidth(Point(100));
+		// // root.setFlexWrap(Wrap);
+		// trace(root);
+		// trace(root.getWidth());
 		// trace(root.isDirty());
-		// root.setWidth(500);
-		// root.setHeight(300);
-		// root.setJustifyContent(Center);
-		// root.setFlexDirection(Row);
-		// trace(root.getJustifyContent());
 
-		// var node1 = Node.create();
-		// node1.setWidth(100);
-		// node1.setHeight(100);
+		root.setWidth(Point(500));
+		root.setHeight(Point(300));
+		root.setJustifyContent(Center);
+		root.setFlexDirection(Row);
 
-		// var node2 = Node.create();
-		// node2.setWidth(100);
-		// node2.setHeight(100);
+		var node1 = new Node();
+		node1.setWidth(Point(100));
+		node1.setHeight(Point(100));
 
-		// root.insertChild(node1, 0);
-		// root.insertChild(node2, 1);
+		var node2 = new Node();
+		node2.setWidth(Point(100));
+		node2.setHeight(Point(100));
 
-		// root.calculateLayout(500, 300, Ltr);
+		asserts.assert(root.getChildCount() == 0);
 
-		// var layout = root.getComputedLayout(); // {left: 0, top: 0, width: 500, height: 300}
+		root.insertChild(node1, 0);
+		root.insertChild(node2, 1);
+
+		asserts.assert(root.getChildCount() == 2);
+		asserts.assert(root.getParent() == null);
+		// asserts.assert(node1.getParent() == root); // JS does not maintain physical equality?!
+		// asserts.assert(node2.getParent() == root); // JS does not maintain physical equality?!
+
+		asserts.assert(root.isDirty());
+		root.calculateLayout(Math.NaN, Math.NaN, Ltr);
+		asserts.assert(!root.isDirty());
+
+		final edges:Array<Edge> = [Left, Top, Right, Bottom]; // , Start, End, Horizontal, Vertical, All];
+
+		var layout = root.getComputedLayout(); // {left: 0, top: 0, width: 500, height: 300}
 		// asserts.assert(layout.left == 0);
 		// asserts.assert(layout.top == 0);
 		// asserts.assert(layout.bottom == 0);
 		// asserts.assert(layout.right == 0);
 		// asserts.assert(layout.width == 500);
 		// asserts.assert(layout.height == 300);
+		asserts.assert(root.getComputedLeft() == 0);
+		asserts.assert(root.getComputedTop() == 0);
+		asserts.assert(root.getComputedWidth() == 500);
+		asserts.assert(root.getComputedHeight() == 300);
+		for (edge in edges) {
+			asserts.assert(root.getComputedMargin(edge) == 0);
+			asserts.assert(root.getComputedPadding(edge) == 0);
+			asserts.assert(root.getComputedBorder(edge) == 0);
+		}
 
-		// var layout = node1.getComputedLayout(); // {left: 150, top: 0, width: 100, height: 100}
+		var layout = node1.getComputedLayout(); // {left: 150, top: 0, width: 100, height: 100}
 		// asserts.assert(layout.left == 150);
 		// asserts.assert(layout.top == 0);
 		// asserts.assert(layout.bottom == 0);
 		// asserts.assert(layout.right == 0);
 		// asserts.assert(layout.width == 100);
 		// asserts.assert(layout.height == 100);
+		asserts.assert(node1.getComputedLeft() == 150);
+		asserts.assert(node1.getComputedTop() == 0);
+		asserts.assert(node1.getComputedWidth() == 100);
+		asserts.assert(node1.getComputedHeight() == 100);
+		for (edge in edges) {
+			asserts.assert(root.getComputedMargin(edge) == 0);
+			asserts.assert(root.getComputedPadding(edge) == 0);
+			asserts.assert(root.getComputedBorder(edge) == 0);
+		}
 
-		// var layout = node2.getComputedLayout(); // {left: 250, top: 0, width: 100, height: 100}
+		var layout = node2.getComputedLayout(); // {left: 250, top: 0, width: 100, height: 100}
 		// asserts.assert(layout.left == 250);
 		// asserts.assert(layout.top == 0);
 		// asserts.assert(layout.bottom == 0);
 		// asserts.assert(layout.right == 0);
 		// asserts.assert(layout.width == 100);
 		// asserts.assert(layout.height == 100);
+		asserts.assert(node2.getComputedLeft() == 250);
+		asserts.assert(node2.getComputedTop() == 0);
+		asserts.assert(node2.getComputedWidth() == 100);
+		asserts.assert(node2.getComputedHeight() == 100);
+		for (edge in edges) {
+			asserts.assert(root.getComputedMargin(edge) == 0);
+			asserts.assert(root.getComputedPadding(edge) == 0);
+			asserts.assert(root.getComputedBorder(edge) == 0);
+		}
+
+		root.removeChild(node1);
+		root.removeChild(node2);
+
+		asserts.assert(root.getChildCount() == 0);
 
 		return asserts.done();
 	}

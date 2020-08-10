@@ -1,7 +1,6 @@
 package yoga;
 
-enum abstract Direction(Int) {
-	var Inherit;
-	var Ltr;
-	var Rtl;
-}
+extern enum Direction {
+	Inherit;
+	Ltr;
+	Rtl;

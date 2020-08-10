@@ -14,8 +14,8 @@ extern class Node {
 	function getAlignSelf():Align;
 	function getAspectRatio():Float;
 	function getBorder(edge:Edge):Float;
-	function getChild(index:Float):Node;
-	function getChildCount():Float;
+	function getChild(index:Int):Node;
+	function getChildCount():Int;
 	function getComputedBorder(edge:Edge):Float;
 	function getComputedBottom():Float;
 	function getComputedHeight():Float;
@@ -27,24 +27,24 @@ extern class Node {
 	function getComputedTop():Float;
 	function getComputedWidth():Float;
 	function getDisplay():Display;
-	function getFlexBasis():Float;
+	function getFlexBasis():NativeValue;
 	function getFlexDirection():FlexDirection;
 	function getFlexGrow():Float;
 	function getFlexShrink():Float;
 	function getFlexWrap():Wrap;
-	function getHeight():Value;
+	function getHeight():NativeValue;
 	function getJustifyContent():Justify;
-	function getMargin(edge:Edge):Value;
-	function getMaxHeight():Value;
-	function getMaxWidth():Value;
-	function getMinHeight():Value;
-	function getMinWidth():Value;
+	function getMargin(edge:Edge):NativeValue;
+	function getMaxHeight():NativeValue;
+	function getMaxWidth():NativeValue;
+	function getMinHeight():NativeValue;
+	function getMinWidth():NativeValue;
 	function getOverflow():Overflow;
-	function getPadding(edge:Edge):Value;
+	function getPadding(edge:Edge):NativeValue;
 	function getParent():Node;
-	function getPosition(edge:Edge):Value;
+	function getPosition(edge:Edge):NativeValue;
 	function getPositionType():PositionType;
-	function getWidth():Value;
+	function getWidth():NativeValue;
 	function insertChild(child:Node, index:Float):Void;
 	function isDirty():Bool;
 	function markDirty():Void;
@@ -89,4 +89,9 @@ extern class Node {
 	function setWidthAuto():Void;
 	function setWidthPercent(width:Float):Void;
 	function unsetMeasureFunc():Void;
+}
+
+extern class NativeValue {
+	final value:Float;
+	final unit:Unit;
 }

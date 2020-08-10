@@ -1,0 +1,26 @@
+java_binary(
+  name = 'run',
+  main_class = 'haxe.root.RunTests',
+  deps = [':main',':yoga'],
+)
+
+prebuilt_jar(
+  name = 'main',
+  binary_jar = 'RunTests.jar',
+)
+
+java_library(
+  name = 'yoga',
+  srcs = [],
+  resources = [],
+    deps = [
+      # C
+      'yoga//:yoga',
+      
+      # Java JNI
+      'yoga//java:jni',
+
+      # Java
+      'yoga//java:java',
+    ]
+)

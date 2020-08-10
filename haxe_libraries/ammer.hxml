@@ -1,3 +1,3 @@
--cp ${SCOPE_DIR}/../ammer/src/
+# @install: lix --silent download "gh://github.com/aurel300/ammer#9c6785b3e39654518d778e384c588208f4fa0dd3" into ammer/0.0.1/github/9c6785b3e39654518d778e384c588208f4fa0dd3
+-cp ${HAXE_LIBCACHE}/ammer/0.0.1/github/9c6785b3e39654518d778e384c588208f4fa0dd3/src/
 -D ammer=0.0.1
---macro Sys.println("haxe_libraries/ammer.hxml:2: [Warning] Using dev version of library ammer")

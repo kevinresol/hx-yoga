@@ -2,14 +2,68 @@ package yoga;
 
 import yoga.impl.Node as NodeImpl;
 
-extern abstract Node(NodeImpl) from NodeImpl to NodeImpl {
+using yoga.util.NativeValueTools;
+
+@:forward
+@:build(yoga.Node.build())
+abstract Node(NodeImpl) from NodeImpl to NodeImpl {
 	public inline function new()
 		this = NodeImpl.create();
+
 	static inline function create():Node
 		return new Node();
 
-	// inline function calculateLayout(?width:Float, ?height:Float, ?direction:Direction):Void
-	// 	this.calculateLayout(width, height, direction);
+	#if java
+	public inline function calculateLayout(width:Float, height:Float, direction:Direction):Void {
+		this.setDirection(direction);
+		this.calculateLayout(width, height);
+	}
+
+	public inline function insertChild(child:Node, index:Int):Void
+		this.addChildAt(child, index);
+
+	public inline function removeChild(child:Node):Void
+		switch this.indexOf(child) {
+			case -1:
+			case i:
+				this.removeChildAt(i);
+		}
+
+	public inline function getComputedLayout():Layout
+		return {
+			left: (this.getLayoutX() : Float),
+			top: (this.getLayoutY() : Float),
+			width: (this.getLayoutWidth() : Float),
+			height: (this.getLayoutHeight() : Float),
+		}
+
+	public inline function getComputedLeft():Float
+		return this.getLayoutX();
+
+	public inline function getComputedTop():Float
+		return this.getLayoutY();
+
+	public inline function getComputedWidth():Float
+		return this.getLayoutWidth();
+
+	public inline function getComputedHeight():Float
+		return this.getLayoutHeight();
+
+	public inline function getComputedMargin(edge):Float
+		return this.getLayoutMargin(edge);
+
+	public inline function getComputedPadding(edge):Float
+		return this.getLayoutPadding(edge);
+
+	public inline function getComputedBorder(edge):Float
+		return this.getLayoutBorder(edge);
+
+	public inline function getFlexWrap():Wrap
+		return this.getWrap();
+
+	public inline function setFlexWrap(wrap:Wrap):Void
+		this.setWrap(wrap);
+	#end
 	// inline function copyStyle(node:Node):Void
 	// 	this.copyStyle(node);
 	// inline function free():Void
@@ -34,22 +88,12 @@ extern abstract Node(NodeImpl) from NodeImpl to NodeImpl {
 	// 	return this.getComputedBorder(edge);
 	// inline function getComputedBottom():Float
 	// 	return this.getComputedBottom();
-	// inline function getComputedHeight():Float
-	// 	return this.getComputedHeight();
-	// inline function getComputedLayout():Layout
-	// 	return this.getComputedLayout();
-	// inline function getComputedLeft():Float
-	// 	return this.getComputedLeft();
 	// inline function getComputedMargin(edge:Edge):Float
 	// 	return this.getComputedMargin(edge);
 	// inline function getComputedPadding(edge:Edge):Float
 	// 	return this.getComputedPadding(edge);
 	// inline function getComputedRight():Float
 	// 	return this.getComputedRight();
-	// inline function getComputedTop():Float
-	// 	return this.getComputedTop();
-	// inline function getComputedWidth():Float
-	// 	return this.getComputedWidth();
 	// inline function getDisplay():Display
 	// 	return this.getDisplay();
 	// inline function getFlexBasis():Float
@@ -66,8 +110,8 @@ extern abstract Node(NodeImpl) from NodeImpl to NodeImpl {
 	// 	return this.getHeight();
 	// inline function getJustifyContent():Justify
 	// 	return this.getJustifyContent();
-	// inline function getMargin(edge:Edge):Value
-	// 	return this.getMargin(edge);
+	// public inline function getMargin(edge:Edge):Value
+	// 	return this.getMargin(edge).toValue();
 	// inline function getMaxHeight():Value
 	// 	return this.getMaxHeight();
 	// inline function getMaxWidth():Value
@@ -86,13 +130,10 @@ extern abstract Node(NodeImpl) from NodeImpl to NodeImpl {
 	// 	return this.getPosition(edge);
 	// inline function getPositionType():PositionType
 	// 	return this.getPositionType();
-	inline function getWidth():Value
-		return this.getWidth();
-	// inline function insertChild(child:Node, index:Float):Void
-	// 	this.insertChild(child, index);
+	// inline function getWidth():Value
+	// 	return this.getWidth();
 	// inline function isDirty():Bool
 	// 	return this.isDirty();
-
 	// inline function markDirty():Void
 	// 	this.markDirty();
 	// inline function removeChild(child:Node):Void
@@ -109,8 +150,7 @@ extern abstract Node(NodeImpl) from NodeImpl to NodeImpl {
 	// 	this.setAspectRatio(aspectRatio);
 	// inline function setBorder(edge:Edge, borderWidth:Float):Void
 	// 	this.setBorder(edge, borderWidth);
-	// inline function setDisplay(display:Display):Void
-	// 	this.setDisplay(display);
+	// inline function setDisplay(display:Display):Void this.setDisplay(display);
 	// inline function setFlex(flex:Float):Void
 	// 	this.setFlex(flex);
 	// inline function setFlexBasis(flexBasis:Float):Void
@@ -119,15 +159,13 @@ extern abstract Node(NodeImpl) from NodeImpl to NodeImpl {
 	// 	this.setFlexBasis('auto');
 	// inline function setFlexBasisPercent(flexBasis:Float):Void
 	// 	this.setFlexBasisPercent(flexBasis);
-	// inline function setFlexDirection(flexDirection:FlexDirection):Void
-	// 	this.setFlexDirection(flexDirection);
 	// inline function setFlexGrow(flexGrow:Float):Void
 	// 	this.setFlexGrow(flexGrow);
 	// inline function setFlexShrink(flexShrink:Float):Void
 	// 	this.setFlexShrink(flexShrink);
 	// inline function setFlexWrap(flexWrap:Wrap):Void
 	// 	this.setFlexWrap(flexWrap);
-	// inline function setHeight(height:Float):Void
+	// public inline function setHeight(height:Float):Void
 	// 	this.setHeight(height);
 	// inline function setHeightAuto():Void
 	// 	this.setHeightAuto();
@@ -135,8 +173,16 @@ extern abstract Node(NodeImpl) from NodeImpl to NodeImpl {
 	// 	this.setHeightPercent(height);
 	// inline function setJustifyContent(justifyContent:Justify):Void
 	// 	this.setJustifyContent(justifyContent);
-	// inline function setMargin(edge:Edge, margin:Float):Void
-	// 	this.setMargin(edge, margin);
+	// public inline function setMargin(edge:Edge, margin:Value):Void
+	// 	switch margin {
+	// 		case Undefined:
+	// 		case Auto:
+	// 			this.setMarginAuto(edge);
+	// 		case Point(v):
+	// 			this.setMargin(edge, v);
+	// 		case Percent(v):
+	// 			this.setMarginPercent(edge, v);
+	// 	}
 	// inline function setMarginAuto(edge:Edge):Void
 	// 	this.setMarginAuto(edge);
 	// inline function setMarginPercent(edge:Edge, margin:Float):Void
@@ -171,8 +217,8 @@ extern abstract Node(NodeImpl) from NodeImpl to NodeImpl {
 	// 	this.setPositionPercent(edge, position);
 	// inline function setPositionType(positionType:PositionType):Void
 	// 	this.setPositionType(positionType);
-	inline function setWidth(width:Single):Void
-		this.setWidth(width);
+	// public inline function setWidth(width:Float):Void
+	// 	this.setWidth(width);
 	// inline function setWidthAuto():Void
 	// 	this.setWidthAuto();
 	// inline function setWidthPercent(width:Float):Void

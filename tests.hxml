@@ -9,3 +9,5 @@
 -D ammer.lib.yoga.library=lib
 -D ammer.lib.yoga.include=submodules/yoga/yoga
 -D ammer.lib.yoga.headers=Yoga.h
+
+-D analyzer-optimize

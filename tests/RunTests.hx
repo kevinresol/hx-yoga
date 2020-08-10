@@ -5,6 +5,11 @@ import tink.unit.*;
 
 class RunTests {
 	static function main() {
-		Runner.run(TestBatch.make([new LayoutTest(),])).handle(Runner.exit);
+		Runner.run(TestBatch.make([
+			// @formatter:off
+			new LayoutTest(),
+			new GetSetTest(),
+			// @formatter:on
+		])).handle(Runner.exit);
 	}
 }

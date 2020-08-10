@@ -1,4 +1,6 @@
 bin/cpp
 bin/node/*.js
+bin/java/*.jar
 buck-out
 node_modules
+.buckd

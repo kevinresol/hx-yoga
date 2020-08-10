@@ -3,7 +3,7 @@
 	"tasks": [
 		{
 			"type": "shell",
-			"command": "lix run travix cpp",
+			"command": "lix run travix jvm",
 			"problemMatcher": [
 				"$haxe-absolute",
 				"$haxe",
