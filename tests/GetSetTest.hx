@@ -148,13 +148,14 @@ class GetSetTest {
 		for (v in list) {
 			root.setHeight(v);
 			root.setWidth(v);
-			root.setFlexBasis(v);
 			asserts.assert(root.getHeight().eq(v));
 			asserts.assert(root.getWidth().eq(v));
-			#if js // for some reason js does not support `setFlexBasis('auto')`
-			if (v != Auto)
-			#end
-			asserts.assert(root.getFlexBasis().eq(v));
+
+			// see: https://github.com/facebook/yoga/issues/766
+			#if js if (v != Auto) #end {
+				root.setFlexBasis(v);
+				asserts.assert(root.getFlexBasis().eq(v));
+			}
 
 			for (edge in edges) {
 				root.setMargin(edge, v);

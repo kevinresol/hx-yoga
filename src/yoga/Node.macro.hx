@@ -10,7 +10,7 @@ class Node {
 		final pos = Context.currentPos();
 		final target = if (Context.defined('java')) Java else if (Context.defined('js')) Js else null;
 
-		function addValue(name:String, args:Array<String>, styles:SetterStyles) {
+		function addValue(name:String, args:Array<String>, auto:Bool) {
 			final callArgs = args.map(a -> macro $i{a});
 			final funcArgs = args.map(a -> ({name: a, type: null} : FunctionArg));
 
@@ -20,12 +20,12 @@ class Node {
 				kind: FFun({
 					args: funcArgs,
 					ret: null,
-					expr: macro return ${get(name, callArgs)},
+					expr: macro return $p{['this', 'get${name}']}($a{callArgs}).toValue(),
 				}),
 				pos: pos,
 			});
 			fields.push({
-				access: [APublic, AInline],
+				access: [APublic],
 				name: 'set$name',
 				kind: FFun({
 					args: funcArgs.concat([{name: 'value', type: macro:yoga.Value}]),
@@ -34,22 +34,25 @@ class Node {
 						final cases = [
 							{
 								values: [macro Undefined],
-								expr: null,
+								expr: macro throw $v{'set${name}'} + ' with Undefined is not supported',
 							},
 							{
 								values: [macro Auto],
-								expr: switch styles.auto {
-									case Some(style): setAuto(name, callArgs, style);
-									case None: null;
-								},
+								expr: auto ? macro $p{['this', 'set${name}Auto']}($a{callArgs}) : macro throw $v{'set${name}'} + ' with Auto is not supported',
 							},
 							{
 								values: [macro Point(v)],
-								expr: setPoint(name, callArgs, macro v, styles.point),
+								expr: {
+									final args = callArgs.concat([macro v]);
+									macro $p{['this', 'set${name}']}($a{args});
+								}
 							},
 							{
 								values: [macro Percent(v)],
-								expr: setPercent(name, callArgs, macro v, styles.percent),
+								expr: {
+									final args = callArgs.concat([macro v]);
+									macro $p{['this', 'set${name}Percent']}($a{args});
+								}
 							},
 						];
 						{expr: ESwitch(macro value, cases, null), pos: pos}
@@ -59,65 +62,19 @@ class Node {
 			});
 		}
 
-		final pointStyle = PointSetterStyle.Dedicated;
-		final percentStyle = switch target {
-			case Java: PercentSetterStyle.Dedicated;
-			case Js: PercentSetterStyle.Overload;
-		}
-		final autoStyle = switch target {
-			case Java: AutoSetterStyle.Dedicated;
-			case Js: AutoSetterStyle.Overload;
-		}
-
-		addValue('FlexBasis', [], {
-			point: pointStyle,
-			percent: percentStyle,
-			auto: target == Js ? None : Some(autoStyle)
-		}); // for some reason js does not support `setFlexBasis('auto')`
-		addValue('Height', [], {point: pointStyle, percent: percentStyle, auto: Some(autoStyle)});
-		addValue('Width', [], {point: pointStyle, percent: percentStyle, auto: Some(autoStyle)});
-		addValue('MaxHeight', [], {point: pointStyle, percent: percentStyle, auto: None});
-		addValue('MaxWidth', [], {point: pointStyle, percent: percentStyle, auto: None});
-		addValue('MinHeight', [], {point: pointStyle, percent: percentStyle, auto: None});
-		addValue('MinWidth', [], {point: pointStyle, percent: percentStyle, auto: None});
-		addValue('Margin', ['edge'], {point: pointStyle, percent: Dedicated, auto: Some(Dedicated)});
-		addValue('Padding', ['edge'], {point: pointStyle, percent: Dedicated, auto: None});
-		addValue('Position', ['edge'], {point: pointStyle, percent: Dedicated, auto: None});
+		// for some reason js does not support `setFlexBasis('auto')`, see: https://github.com/facebook/yoga/issues/766
+		addValue('FlexBasis', [], target != Js);
+		addValue('Height', [], true);
+		addValue('Width', [], true);
+		addValue('MaxHeight', [], false);
+		addValue('MaxWidth', [], false);
+		addValue('MinHeight', [], false);
+		addValue('MinWidth', [], false);
+		addValue('Margin', ['edge'], true);
+		addValue('Padding', ['edge'], false);
+		addValue('Position', ['edge'], false);
 
 		return fields;
-	}
-
-	static function get(name, args) {
-		return macro $p{['this', 'get${name}']}($a{args}).toValue();
-	}
-
-	static function setPoint(name, args, v, style:PointSetterStyle) {
-		return switch style {
-			case Dedicated:
-				final args = args.concat([v]);
-				macro $p{['this', 'set${name}']}($a{args});
-		}
-	}
-
-	static function setPercent(name, args, v, style:PercentSetterStyle) {
-		return switch style {
-			case Dedicated:
-				final args = args.concat([v]);
-				macro $p{['this', 'set${name}Percent']}($a{args});
-			case Overload:
-				final args = args.concat([macro $v + '%']);
-				macro $p{['this', 'set${name}']}($a{args});
-		}
-	}
-
-	static function setAuto(name, args, style:AutoSetterStyle) {
-		return switch style {
-			case Dedicated:
-				macro $p{['this', 'set${name}Auto']}($a{args});
-			case Overload:
-				final args = args.concat([macro 'auto']);
-				macro $p{['this', 'set${name}']}($a{args});
-		}
 	}
 }
 
